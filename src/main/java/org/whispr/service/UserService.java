@@ -48,8 +48,13 @@ public class UserService {
         });
     }
 
-    public User registerUser(User user) {
-
+    public User registerUser(SignupRequest signupRequest) {
+        User user = new User();
+        user.setUsername(signupRequest.getUsername());
+        user.setEmail(signupRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        user.setName(signupRequest.getName());
+        return userRepository.save(user);
     }
 
     private UserResponse convertToUser(User user) {
