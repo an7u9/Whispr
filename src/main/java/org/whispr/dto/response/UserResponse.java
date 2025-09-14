@@ -20,7 +20,7 @@ public class UserResponse {
     private Set<String> friendsList;
     private Set<String> groupsJoined;
 
-    public UserResponse(Set<String> blockedUsers, String bio, Set<String> chatRooms, String email, Set<String> friendsList, Set<String> groupsJoined, String id, LocalDateTime lastSeen, String name, boolean online, String profilePicture, String role, String username) {
+    public UserResponse() {
         this.blockedUsers = blockedUsers;
         this.bio = bio;
         this.chatRooms = chatRooms;
