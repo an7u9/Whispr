@@ -1,10 +1,13 @@
 package org.whispr.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.whispr.dto.response.UserResponse;
 import org.whispr.entity.User;
 import org.whispr.repository.UserRepository;
+import org.whispr.dto.request.SignUpRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
@@ -48,13 +53,19 @@ public class UserService {
         });
     }
 
-    public User registerUser(SignupRequest signupRequest) {
+    @Transactional
+    public User registerUser(SignUpRequest signupRequest) {
         User user = new User();
         user.setUsername(signupRequest.getUsername());
         user.setEmail(signupRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
         user.setName(signupRequest.getName());
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
     }
 
     private UserResponse convertToUser(User user) {
